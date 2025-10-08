@@ -4,6 +4,7 @@
 #include "math/mat2.h"
 #include <memory>
 #include <vector>
+#include <cstdint>
 
 namespace parallax {
 
