@@ -177,4 +177,4 @@ AABB AABB::fromBody(const RigidBody* body) {
     return AABB();
 }
 
-} // namespace parallax
+}

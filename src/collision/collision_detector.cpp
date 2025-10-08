@@ -129,7 +129,7 @@ bool CollisionDetector::detectCirclePolygon(
     // Transform circle center to polygon's local space
     Vec2 localCirclePos = polyRot.transpose() * (circlePos - polyPos);
     
-    // Find closest point on polygon to circle center
+    // Find closest point on polygon to circlecenter
     const auto& vertices = polygon->getVertices();
     float minDistSq = std::numeric_limits<float>::max();
     Vec2 closestPoint;
