@@ -4,36 +4,38 @@
 #include "math/vec2.h"
 
 namespace parallax {
-    /**
-     * @brief Base class for constraints that limit how bodies interact with each other
-     */
-    class Constraint {
-        public:
-            virtual ~Constraint() = default;
 
-            virtual void prepare(float dt) = 0;
-            virtual void solve() = 0;
+/**
+ * @brief Base class for constraints that limit how bodies interact with each other
+ */
+class Constraint {
+public:
+    virtual ~Constraint() = default;
 
-            RigidBody* getBodyA() const { return m_bodyA; }
-            RigidBody* getBodyB() const { return m_bodyB; }
-            
-            void setEnabled(bool enabled) { 
-                m_enabled = enabled; 
-            }
+    virtual void prepare(float dt) = 0;
+    virtual void solve() = 0;
 
-            bool isEnabled() const {
-                return m_enabled;
-            }
+    RigidBody* getBodyA() const { return m_bodyA; }
+    RigidBody* getBodyB() const { return m_bodyB; }
+    
+    void setEnabled(bool enabled) { 
+        m_enabled = enabled; 
+    }
 
-        protected:
-            Constraint(RigidBody* bodyA, RigidBody* bodyB)
-                : m_bodyA(bodyA)
-                , m_bodyB(bodyB)
-                , m_enabled(true)
-            {}
+    bool isEnabled() const {
+        return m_enabled;
+    }
 
-            RigidBody* m_bodyA;
-            RigidBody* m_bodyB;
-            bool m_enabled;
-    };
-}
+protected:
+    Constraint(RigidBody* bodyA, RigidBody* bodyB)
+        : m_bodyA(bodyA)
+        , m_bodyB(bodyB)
+        , m_enabled(true)
+    {}
+
+    RigidBody* m_bodyA;
+    RigidBody* m_bodyB;
+    bool m_enabled;
+};
+
+} // namespace parallax
