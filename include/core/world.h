@@ -53,12 +53,12 @@ public:
         return m_gravity;
     }
 
-    void setIterations(int iterations){
-        m_iterations = iterations;
+    void setIterations(int iterations) {
+        m_solver.setIterations(iterations);
     }
 
     int getIterations() const {
-        return m_iterations;
+        return m_solver.getIterations();
     }
 
     void setSpatialHashCellSize(float size);
@@ -71,11 +71,11 @@ public:
     }
 
     size_t getConstraintCount() const {
-        return m_constraints.size();
+        return m_solver.getConstraintCount();
     }
 
     size_t getContactCount() const {
-        return m_constacts.size();
+        return m_contacts.size();
     }
 
 private:
@@ -91,5 +91,6 @@ private:
     void detectCollisions();
     void solveConstraints(float dt);
     void integrate(float dt);
-}
-}
+};
+
+} // namespace parallax
