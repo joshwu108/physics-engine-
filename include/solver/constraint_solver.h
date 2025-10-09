@@ -11,6 +11,36 @@ namespace parallax {
  * @brief Constraint solver that uses the Gauss-Seidel method to solve constraints
  */
 class ConstraintSolver {
+private:
+    /**
+     * @brief Contact constraints for solving contacts
+     */
+    class ContactConstraint {
+    public:
+        ContactConstraint(const Contact& contact);
+
+        void prepare(float dt);
+        void solve();
+
+    private:
+        RigidBody* m_bodyA;
+        RigidBody* m_bodyB;
+
+        Vec2 m_position; //collision point
+        Vec2 m_normal; 
+        float m_penetration; //overlap betweeen the bodies
+
+        float m_restitution;
+        float m_friction;
+
+        Vec2 m_rA, m_rB;
+        float m_normalMass;
+        float m_tangentMass;
+
+        float m_normalImpulse;
+        float m_tangentImpulse;
+    };
+
 public:
     ConstraintSolver();
 
@@ -42,34 +72,6 @@ private:
     std::vector<ContactConstraint> m_contactConstraints;
 
     int m_iterations;
-    /**
-     * @brief Contact constraints for solving contacts
-     */
-    class ContactConstraint {
-    public:
-        ContactConstraint(const Contact& contact);
-
-        void prepare(float dt);
-        void solve();
-
-    private:
-        RigidBody* m_bodyA;
-        RigidBody* m_bodyB;
-
-        Vec2 m_position; //collision point
-        Vec2 m_normal; 
-        float m_penetration; //overlap betweeen the bodies
-
-        float m_restitution;
-        float m_friction;
-
-        Vec2 m_rA, m_rB;
-        float m_normalMass;
-        float m_tangentMass;
-
-        float m_normalImpulse;
-        float m_tangentImpulse;
-    };
 };
 
-}
+} // namespace parallax

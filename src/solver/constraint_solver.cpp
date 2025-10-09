@@ -83,7 +83,7 @@ void ConstraintSolver::ContactConstraint::prepare(float dt){
     float rnA = m_rA.cross(m_normal);
     float rnB = m_rB.cross(m_normal);
 
-    float kNormal = m_bodyA->getInvMass() + m_bodyB->getInvMass() + rnA * rnA * m_bodyA->getInvInertia() + rnB*rnB*m_body->getInvInertia();
+    float kNormal = m_bodyA->getInvMass() + m_bodyB->getInvMass() + rnA * rnA * m_bodyA->getInvInertia() + rnB * rnB * m_bodyB->getInvInertia();
     m_normalMass = (kNormal > 1e-6f) ? (1.0f / kNormal) : 0.0f;
 
     Vec2 tangent = m_normal.perpendicular();
@@ -107,16 +107,16 @@ void ConstraintSolver::ContactConstraint::solve(){
 
     const float baumgarte = 0.2f;
     const float slop = 0.01f;
-    float bias = (baumgarte + 0.016f) * std::max(m_penetration - slop, 0.0f);
+    float bias = (baumgarte / 0.016f) * std::max(m_penetration - slop, 0.0f);
     float restitutionBias = 0.0f;
     const float restitutionThreshold = 1.0f;
-    if (std::abs(normalVal) > restitutionThreshold) {
+    if (std::abs(normalVel) > restitutionThreshold) {
         restitutionBias = -m_restitution * normalVel;
     }
 
     float lambda = -(normalVel + bias + restitutionBias) * m_normalMass;
     float oldImpulse = m_normalImpulse;
-    float newImpulse = std::max(m_normalImpulse + lambda, 0.0f);
+    m_normalImpulse = std::max(m_normalImpulse + lambda, 0.0f);
     lambda = m_normalImpulse - oldImpulse;
 
     Vec2 impulse = m_normal * lambda;
@@ -128,7 +128,7 @@ void ConstraintSolver::ContactConstraint::solve(){
     float tangentVel = relativeVel.dot(tangent);
 
     float frictionLambda = -tangentVel * m_tangentMass;
-    float maxFriction = m_friction * newImpulse;
+    float maxFriction = m_friction * m_normalImpulse;
     float oldTangentImpulse = m_tangentImpulse;
     m_tangentImpulse = std::clamp(m_tangentImpulse + frictionLambda, -maxFriction, maxFriction);
     frictionLambda = m_tangentImpulse - oldTangentImpulse;
