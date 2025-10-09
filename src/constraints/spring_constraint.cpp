@@ -76,3 +76,5 @@ void SpringConstraint::solve() {
     m_bodyA->applyImpulseAtPoint(-impulse, pA);
     m_bodyB->applyImpulseAtPoint(impulse, pB);
 }
+
+} // namespace parallax
