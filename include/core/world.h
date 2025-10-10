@@ -25,6 +25,7 @@ namespace parallax {
 class World {
 public:
     World();
+    explicit World(const Vec2& gravity);
 
     void step(float dt);
 
